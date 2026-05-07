@@ -99,4 +99,75 @@ cv2.circle(frame, (x, y), 20, (0,0,255), -1)
 altura_barra = int((1 - index.y) * 300)
 cv2.rectangle(frame, (50, 400), (100, 400 - altura_barra), (0,255,0), -1)
 ```
+### Código Arduino (LED)
 
+int led = 9;
+
+void setup() {
+  pinMode(led, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()) {
+    int valor = Serial.parseInt();
+    analogWrite(led, valor);
+  }
+}
+
+# Código Python (integração)
+
+Adicionar no início:
+```
+import serial
+import time
+
+arduino = serial.Serial('COM3', 9600)
+time.sleep(2)
+```
+# Controle com dedo (volume → LED)
+```
+valor = int((1 - index.y) * 255)
+arduino.write(f"{valor}
+".encode())
+```
+# Exemplo completo 
+```
+if result.hand_landmarks:
+    hand_landmarks = result.hand_landmarks[0]
+    index = hand_landmarks[8]
+
+    h, w, _ = frame.shape
+    x, y = int(index.x * w), int(index.y * h)
+
+    cv2.circle(frame, (x, y), 10, (255,0,0), -1)
+
+    valor = int((1 - index.y) * 255)
+    arduino.write(f"{valor}
+".encode())
+```
+# Servo Motor
+```
+Arduino:
+
+#include <Servo.h>
+Servo servo;
+
+void setup() {
+  servo.attach(9);
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available()) {
+    int angulo = Serial.parseInt();
+    servo.write(angulo);
+  }
+}
+```
+#Python:
+```
+angulo = int((1 - index.y) * 180)
+arduino.write(f"{angulo}
+".encode())
+```
