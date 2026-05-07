@@ -6,7 +6,7 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 
 
-# 📦 Modelo
+# Modelo
 model_path = "hand_landmarker.task"
 
 # Configuração Tasks API
@@ -23,7 +23,7 @@ options = HandLandmarkerOptions(
 
 detector = HandLandmarker.create_from_options(options)
 
-# 📹 Vídeo / webcam
+# Vídeo / webcam
 cap = cv2.VideoCapture(0)
 
 timestamp = 0
@@ -50,10 +50,10 @@ while cap.isOpened():
                 x, y = int(landmark.x * w), int(landmark.y * h)
                 cv2.circle(frame, (x, y), 3, (0, 255, 0), -1)
 
-            # 👆 Dedo indicador (índice 8)
+            # Dedo indicador (índice 8)
             index_finger_y = hand_landmarks[8].y
 
-            # 🎯 Lógica (igual seu código)
+            # Lógica (igual seu código)
             if index_finger_y < 0.5:
 
                 cv2.putText(frame, "90 graus", (10, 50),
